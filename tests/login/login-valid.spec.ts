@@ -1,12 +1,13 @@
 import { test, expect } from '../../fixtures/base.fixture';
+import { LoginTestData } from '../../utils/test-data/login-test-data/login.test.data';
 
 /**
  * Valid Login Test Suite
  *
  * Tests the happy path of the Hudl login flow.
  * The Hudl login is a TWO-STEP process:
- *   Step 1: Enter email → Click Continue
- *   Step 2: Enter password → Click Continue → Redirect to Dashboard
+ *   Step 1: Enter email → Click Continue (identity.hudl.com/u/login/identifier)
+ *   Step 2: Enter password → Click Continue (identity.hudl.com/u/login/password)
  *
  * Prerequisites:
  *   - Valid Hudl test credentials in env/.env.prod
@@ -51,12 +52,14 @@ test.describe('Valid Login', () => {
   }) => {
     // Verify: Email screen is the initial state
     await loginPage.assertEmailScreenLoaded();
+    await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
 
     // Action: Submit valid email
     await loginPage.submitEmail(credentials.email);
 
-    // Verify: Password screen is now visible with all expected elements
+    // Verify: Password screen is now visible with correct URL
     await loginPage.assertPasswordScreenLoaded();
+    await expect(loginPage.page).toHaveURL(LoginTestData.PASSWORD_SCREEN_URL);
   });
 
   test('should allow editing email from password screen', async ({
@@ -70,8 +73,9 @@ test.describe('Valid Login', () => {
     // Action: Click edit email to go back
     await loginPage.clickEditEmail();
 
-    // Verify: Back on email screen
+    // Verify: Back on email screen with correct URL
     await loginPage.assertEmailScreenLoaded();
+    await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
 
     // Verify: Email field retains the previously entered value
     const emailValue = await loginPage.getEmailInputValue();
