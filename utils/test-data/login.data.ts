@@ -5,18 +5,20 @@
  */
 
 export const LoginTestData = {
-  // Invalid credentials for negative tests
+  // Invalid email scenarios
   INVALID_EMAIL: 'invalid_user@example.com',
-  INVALID_PASSWORD: 'WrongPassword123!',
   MALFORMED_EMAIL: 'not-an-email',
   EMPTY_STRING: '',
   EMAIL_WITH_SPACES: '  spaces@example.com  ',
 
-  // Expected UI text
-  ERROR_MESSAGE: "We don't recognize that email and/or password",
-  PAGE_TITLE: 'Log In',
+  // Invalid password scenarios
+  INVALID_PASSWORD: 'WrongPassword123!',
+
+  // Expected error messages (update these after verifying actual messages)
+  EMAIL_ERROR_MESSAGE: 'Enter a valid email.',
+  PASSWORD_ERROR_MESSAGE: 'Incorrect username or password.',
 
   // Expected URLs
-  LOGIN_URL: '/login',
-  HOME_URL: '/home',
+  LOGIN_URL: '/u/login/identifier',
+  // DASHBOARD_URL: 'https://fan.hudl.com/',
 } as const;

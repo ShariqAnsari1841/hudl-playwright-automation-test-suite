@@ -1,4 +1,6 @@
-import { test as base, Page } from '@playwright/test';
+import { test as base, type Page } from '@playwright/test';
+import { LoginPage } from '../pages/login/login.page';
+import { DashboardPage } from '../pages/dashboard/dashboard.page';
 import { EnvConfigReader } from '../config/env.config';
 
 /**
@@ -15,30 +17,61 @@ type Credentials = {
  */
 type CustomFixtures = {
   credentials: Credentials;
-  loginPage: Page;
+  loginPage: LoginPage;
+  dashboardPage: DashboardPage;
+  authenticatedPage: Page;
 };
 
 /**
  * Extended Playwright test with custom fixtures.
  *
- * Usage in tests:
- *   import { test, expect } from '../../fixtures/base.fixture';
+ * === For LOGIN FLOW tests ===
+ * Use loginPage + dashboardPage + credentials:
  *
- *   test('example', async ({ credentials, loginPage }) => {
- *     // credentials.email and credentials.password are available
- *     // loginPage is already navigated to the login URL
+ *   test('verify login', async ({ loginPage, dashboardPage, credentials }) => {
+ *     await loginPage.login(credentials.email, credentials.password);
+ *     await dashboardPage.assertLoggedIn();
+ *   });
+ *
+ * === For tests that NEED TO BE LOGGED IN first ===
+ * Use authenticatedPage (handles login automatically):
+ *
+ *   test('verify dashboard', async ({ authenticatedPage }) => {
+ *     // Already logged in — start testing from here
  *   });
  */
 export const test = base.extend<CustomFixtures>({
-  // Fixture: Provides validated credentials to tests
+  // Fixture: Provides validated credentials from env file
   credentials: async ({}, use) => {
     const config = EnvConfigReader.getInstance();
     await use(config.getCredentials());
   },
 
-  // Fixture: Provides a page already navigated to login URL
+  // Fixture: Provides LoginPage navigated to /login
   loginPage: async ({ page }, use) => {
-    await page.goto('/login');
+    const loginPage = new LoginPage(page);
+    await loginPage.navigate();
+    await loginPage.assertPageLoaded();
+    await use(loginPage);
+  },
+
+  // Fixture: Provides DashboardPage (used after login to verify success)
+  dashboardPage: async ({ page }, use) => {
+    const dashboardPage = new DashboardPage(page);
+    await use(dashboardPage);
+  },
+
+  // Fixture: Provides a page that is already logged in
+  // Handles the entire login flow automatically
+  authenticatedPage: async ({ page }, use) => {
+    const config = EnvConfigReader.getInstance();
+    const loginPage = new LoginPage(page);
+    const dashboardPage = new DashboardPage(page);
+
+    await loginPage.navigate();
+    await loginPage.login(config.getEmail(), config.getPassword());
+    await dashboardPage.assertLoggedIn();
+
     await use(page);
   },
 });
