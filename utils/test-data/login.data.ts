@@ -1,7 +1,7 @@
 /**
- * Test data constants used across login test scenarios.
- * Actual credentials are loaded from environment variables.
- * These are intentionally invalid values for negative testing.
+ * Test data constants for Login page test scenarios.
+ * Actual valid credentials are loaded from environment config.
+ * This file contains only invalid/edge-case data for negative testing.
  */
 
 export const LoginTestData = {
@@ -13,7 +13,10 @@ export const LoginTestData = {
   EMAIL_WITH_SPACES: '  spaces@example.com  ',
 
   // Expected UI text
-  ERROR_MESSAGE: 'We don\'t recognize that email and/or password',
+  ERROR_MESSAGE: "We don't recognize that email and/or password",
   PAGE_TITLE: 'Log In',
+
+  // Expected URLs
   LOGIN_URL: '/login',
+  HOME_URL: '/home',
 } as const;

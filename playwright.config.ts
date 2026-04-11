@@ -1,8 +1,26 @@
 import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
+import path from 'path';
 
-// Load environment variables from .env file
-dotenv.config();
+/**
+ * Load environment variables from the appropriate .env file.
+ *
+ * Usage from terminal:
+ *   env=prod npx playwright test              (uses env/.env.prod)
+ *   env=staging npx playwright test           (uses env/.env.staging)
+ *   npx playwright test                            (defaults to env/.env.prod)
+ *
+ * Combined with other Playwright options:
+ *   env=prod npx playwright test --headed
+ *   env=prod npx playwright test --project=chromium
+ *   env=staging npx playwright test --ui
+ *   env=prod npx playwright test tests/login/
+ */
+process.env.env = process.env.env || 'prod';
+
+dotenv.config({
+  path: path.resolve(__dirname, `./env/.env.${process.env.env}`),
+});
 
 export default defineConfig({
   // Directory where tests are located
@@ -26,10 +44,18 @@ export default defineConfig({
     ['html', { open: 'never' }],
   ],
 
+  // Global timeout for each test
+  timeout: 60_000,
+
+  // Assertion timeout
+  expect: {
+    timeout: 10_000,
+  },
+
   // Shared settings for all tests
   use: {
-    // Base URL for navigation
-    baseURL: process.env.BASE_URL || 'https://www.hudl.com',
+    // Base URL loaded from environment file
+    baseURL: process.env.BASE_URL,
 
     // Capture screenshot on failure
     screenshot: 'only-on-failure',
@@ -40,29 +66,35 @@ export default defineConfig({
     // Capture trace on first retry
     trace: 'on-first-retry',
 
-    // Browser viewport size
-    viewport: { width: 1280, height: 720 },
-
     // Action timeout
-    actionTimeout: 10000,
+    actionTimeout: 10_000,
 
     // Navigation timeout
-    navigationTimeout: 30000,
+    navigationTimeout: 30_000,
   },
 
   // Configure browser projects
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 720 },
+      },
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        viewport: { width: 1280, height: 720 },
+      },
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: {
+        ...devices['Desktop Safari'],
+        viewport: { width: 1280, height: 720 },
+      },
     },
   ],
 });
