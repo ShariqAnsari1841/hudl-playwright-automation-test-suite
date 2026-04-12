@@ -1,0 +1,101 @@
+name: Playwright Tests
+
+# When to run this pipeline
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+  # Allow manual trigger with environment selection
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run tests against'
+        required: true
+        default: 'prod'
+        type: choice
+        options:
+          - prod
+          - staging
+
+jobs:
+  test:
+    name: Run Playwright Tests (${{ github.event.inputs.environment || 'prod' }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    # Set environment variable based on trigger
+    env:
+      TEST_ENVIRONMENT: ${{ github.event.inputs.environment || 'prod' }}
+
+    steps:
+      # Step 1: Checkout the repository code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # Step 3: Install project dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # Step 4: Install Playwright browsers
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      # Step 5: Create prod env file from GitHub Secrets
+      - name: Create prod environment file
+        if: env.TEST_ENVIRONMENT == 'prod'
+        run: |
+          mkdir -p env
+          echo "BASE_URL=${{ secrets.PROD_BASE_URL }}" >> env/.env.prod
+          echo "DASHBOARD_URL=${{ secrets.PROD_DASHBOARD_URL }}" >> env/.env.prod
+          echo "HUDL_EMAIL=${{ secrets.PROD_HUDL_EMAIL }}" >> env/.env.prod
+          echo "HUDL_PASSWORD=${{ secrets.PROD_HUDL_PASSWORD }}" >> env/.env.prod
+
+      # Step 6: Create staging env file from GitHub Secrets
+      - name: Create staging environment file
+        if: env.TEST_ENVIRONMENT == 'staging'
+        run: |
+          mkdir -p env
+          echo "BASE_URL=${{ secrets.STAGING_BASE_URL }}" >> env/.env.staging
+          echo "DASHBOARD_URL=${{ secrets.STAGING_DASHBOARD_URL }}" >> env/.env.staging
+          echo "HUDL_EMAIL=${{ secrets.STAGING_HUDL_EMAIL }}" >> env/.env.staging
+          echo "HUDL_PASSWORD=${{ secrets.STAGING_HUDL_PASSWORD }}" >> env/.env.staging
+
+      # Step 7: Run linting
+      - name: Run ESLint
+        run: npm run lint
+
+      # Step 8: Check formatting
+      - name: Check Prettier formatting
+        run: npm run format:check
+
+      # Step 9: Run Playwright tests
+      - name: Run Playwright tests
+        run: ENV=${{ env.TEST_ENVIRONMENT }} npx playwright test --project=chromium
+        continue-on-error: true
+
+      # Step 10: Upload HTML report as artifact
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-html-report-${{ env.TEST_ENVIRONMENT }}
+          path: playwright-report/
+          retention-days: 30
+
+      # Step 11: Upload test results
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-test-results-${{ env.TEST_ENVIRONMENT }}
+          path: test-results/
+          retention-days: 30
