@@ -38,7 +38,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
       # Step 3: Install project dependencies
@@ -82,20 +82,23 @@ jobs:
         run: ENV=${{ env.TEST_ENVIRONMENT }} npx playwright test --project=chromium
         continue-on-error: true
 
-      # Step 10: Upload HTML report as artifact
+      # Step 10: Copy test results into report folder for screenshots/videos
+      - name: Bundle screenshots and videos with report
+        if: always()
+        run: |
+          if [ -d "test-results" ]; then
+            cp -r test-results playwright-report/ 2>/dev/null || true
+            echo "✅ Test results bundled with report"
+          else
+            echo "ℹ️ No test-results folder found"
+          fi
+
+      # Step 11: Upload complete HTML report with screenshots and videos
       - name: Upload HTML report
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-html-report-${{ env.TEST_ENVIRONMENT }}
+          name: playwright-report-${{ env.TEST_ENVIRONMENT }}
           path: playwright-report/
           retention-days: 30
-
-      # Step 11: Upload test results
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-test-results-${{ env.TEST_ENVIRONMENT }}
-          path: test-results/
-          retention-days: 30
+          if-no-files-found: ignore
