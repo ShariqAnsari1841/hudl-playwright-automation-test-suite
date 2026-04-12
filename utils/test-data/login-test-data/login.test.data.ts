@@ -5,7 +5,7 @@
  */
 
 export const LoginTestData = {
-  // Invalid email scenarios (static — use for specific tests only)
+  // Invalid email scenarios
   MALFORMED_EMAIL: 'not-an-email',
   EMPTY_STRING: '',
   SPACES_ONLY: '   ',
@@ -29,8 +29,22 @@ export const LoginTestData = {
   // Rate limiting config
   MAX_LOGIN_ATTEMPTS: 10,
 
+  // Login page UI constants
+  LOGIN_PAGE_TITLE: 'Log In',
+  PAGE_HEADING: 'Log In',
+  PASSWORD_TYPE_MASKED: 'password',
+  PASSWORD_TYPE_VISIBLE: 'text',
+  SHOW_PASSWORD_LABEL: 'Show password',
+  HIDE_PASSWORD_LABEL: 'Hide password',
+  SAMPLE_EMAIL: 'test@example.com',
+  SAMPLE_PASSWORD: 'TestPassword123',
+
+  // Dashboard UI constants
+  DASHBOARD_PAGE_TITLE: 'Hudl - Fan',
+
   // URL patterns
   EMAIL_SCREEN_URL: /.*\/u\/login\/identifier.*/,
   PASSWORD_SCREEN_URL: /.*\/u\/login\/password.*/,
+  FORGOT_PASSWORD_URL: /.*\/u\/reset-password\/request\/.*/,
   LOGIN_URL: /.*\/u\/login\/.*/,
 } as const;

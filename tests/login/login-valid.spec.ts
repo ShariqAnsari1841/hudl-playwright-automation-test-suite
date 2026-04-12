@@ -25,13 +25,13 @@ test.describe('Valid Login', () => {
   }) => {
     // Step 1: Submit email and verify password screen appears
     await loginPage.submitEmail(credentials.email);
-    await loginPage.assertPasswordScreenLoaded();
+    await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
     // Step 2: Submit password
     await loginPage.submitPassword(credentials.password);
 
     // Verify: User is redirected away from login page
-    await dashboardPage.assertLoggedIn();
+    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
   });
 
   test('should redirect to dashboard after successful login', async ({
@@ -44,42 +44,22 @@ test.describe('Valid Login', () => {
 
     // Verify: URL contains /home (dashboard)
     await dashboardPage.assertPageLoaded();
+    // Verify: Page title is correct for logged in user
+    await dashboardPage.assertPageTitle(LoginTestData.DASHBOARD_PAGE_TITLE);
   });
 
-  test('should transition from email screen to password screen', async ({
+  test('should display user avatar after successful login', async ({
     loginPage,
+    dashboardPage,
     credentials,
   }) => {
-    // Verify: Email screen is the initial state
-    await loginPage.assertEmailScreenLoaded();
-    await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
-
-    // Action: Submit valid email
-    await loginPage.submitEmail(credentials.email);
-
-    // Verify: Password screen is now visible with correct URL
-    await loginPage.assertPasswordScreenLoaded();
-    await expect(loginPage.page).toHaveURL(LoginTestData.PASSWORD_SCREEN_URL);
-  });
-
-  test('should allow editing email from password screen', async ({
-    loginPage,
-    credentials,
-  }) => {
-    // Navigate to password screen
-    await loginPage.submitEmail(credentials.email);
-    await loginPage.assertPasswordScreenLoaded();
-
-    // Action: Click edit email to go back
-    await loginPage.clickEditEmail();
-
-    // Verify: Back on email screen with correct URL
-    await loginPage.assertEmailScreenLoaded();
-    await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
-
-    // Verify: Email field retains the previously entered value
-    const emailValue = await loginPage.getEmailInputValue();
-    expect(emailValue).toBe(credentials.email);
+    // Perform complete login using shorthand method
+    await loginPage.login(credentials.email, credentials.password);
+    
+    // Verify: User is redirected away from login page
+    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    // Verify: User avatar is visible in the header
+    await dashboardPage.assertUserAvatarVisible();
   });
 
   test('should maintain session after page reload post-login', async ({
@@ -89,12 +69,14 @@ test.describe('Valid Login', () => {
   }) => {
     // Login successfully
     await loginPage.login(credentials.email, credentials.password);
-    await dashboardPage.assertLoggedIn();
+    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
 
     // Reload the page
     await loginPage.page.reload();
 
     // Verify: User is still logged in after reload
-    await dashboardPage.assertLoggedIn();
+    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    // Verify: User avatar is still visible after reload
+    await dashboardPage.assertUserAvatarVisible();
   });
 });

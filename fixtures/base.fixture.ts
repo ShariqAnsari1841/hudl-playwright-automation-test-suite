@@ -2,6 +2,7 @@ import { test as base, type Page } from '@playwright/test';
 import { LoginPage } from '../pages/login/login.page';
 import { DashboardPage } from '../pages/dashboard/dashboard.page';
 import { EnvConfigReader } from '../config/env.config';
+import { LoginTestData } from '../utils/test-data/login-test-data/login.test.data';
 
 /**
  * Custom type definition for our test credentials.
@@ -51,13 +52,14 @@ export const test = base.extend<CustomFixtures>({
   loginPage: async ({ page }, use) => {
     const loginPage = new LoginPage(page);
     await loginPage.navigate();
-    await loginPage.assertPageLoaded();
+    await loginPage.assertPageLoaded(LoginTestData.EMAIL_SCREEN_URL);
     await use(loginPage);
   },
 
-  // Fixture: Provides DashboardPage (used after login to verify success)
+  // Fixture: Provides DashboardPage with environment-specific URL
   dashboardPage: async ({ page }, use) => {
-    const dashboardPage = new DashboardPage(page);
+    const config = EnvConfigReader.getInstance();
+    const dashboardPage = new DashboardPage(page, config.getDashboardURL());
     await use(dashboardPage);
   },
 
@@ -66,11 +68,11 @@ export const test = base.extend<CustomFixtures>({
   authenticatedPage: async ({ page }, use) => {
     const config = EnvConfigReader.getInstance();
     const loginPage = new LoginPage(page);
-    const dashboardPage = new DashboardPage(page);
+    const dashboardPage = new DashboardPage(page, config.getDashboardURL());
 
     await loginPage.navigate();
     await loginPage.login(config.getEmail(), config.getPassword());
-    await dashboardPage.assertLoggedIn();
+    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
 
     await use(page);
   },

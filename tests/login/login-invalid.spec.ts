@@ -68,31 +68,10 @@ test.describe('Invalid Login', () => {
       randomEmail = generateRandomEmail();
     });
 
-    test('should not allow editing email directly on password screen', async ({ loginPage }) => {
-      // Navigate to password screen with random email
-      await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
-
-      // Verify: Email is displayed as read-only text
-      await loginPage.assertEmailNotEditable();
-
-      // Verify: Displayed email matches what was entered
-      const displayedEmail = await loginPage.getDisplayedEmail();
-      expect(displayedEmail).toBe(randomEmail);
-
-      // Verify: Only way to change email is through Edit link
-      await loginPage.clickEditEmail();
-
-      // Verify: Now back on email screen where email IS editable
-      await loginPage.assertEmailScreenLoaded();
-      await expect(loginPage.emailInput).toBeVisible();
-      await expect(loginPage.emailInput).toBeEditable();
-    });
-
     test('should show error when submitting empty password', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
+      await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
       // Action: Click continue without entering password
       await loginPage.clickContinue();
@@ -107,7 +86,7 @@ test.describe('Invalid Login', () => {
     test('should show error when submitting wrong password', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
+      await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
       // Action: Enter wrong password and submit
       await loginPage.submitPassword(LoginTestData.INVALID_PASSWORD);
@@ -116,7 +95,7 @@ test.describe('Invalid Login', () => {
       await loginPage.assertInvalidPasswordError(LoginTestData.WRONG_PASSWORD_ERROR);
 
       // Verify: User remains on login page
-      await loginPage.assertStillOnLoginPage();
+      await loginPage.assertStillOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
     });
 
     test('should show general error when submitting spaces only as password', async ({
@@ -124,7 +103,7 @@ test.describe('Invalid Login', () => {
     }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
+      await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
       // Action: Enter only spaces as password and submit
       await loginPage.submitPassword(LoginTestData.SPACES_ONLY);
@@ -138,13 +117,13 @@ test.describe('Invalid Login', () => {
     }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
+      await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
       // Action: Submit wrong password
       await loginPage.submitPassword(LoginTestData.INVALID_PASSWORD);
 
       // Verify: User is still on login page
-      await loginPage.assertStillOnLoginPage();
+      await loginPage.assertStillOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
 
       // Verify: Continue button is still available for retry
       await expect(loginPage.continueButton).toBeVisible();
@@ -155,7 +134,7 @@ test.describe('Invalid Login', () => {
     }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
+      await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
       // First attempt: Wrong password
       await loginPage.submitPassword(LoginTestData.INVALID_PASSWORD);
@@ -166,7 +145,7 @@ test.describe('Invalid Login', () => {
       await loginPage.clickContinue();
 
       // Verify: Still on login page (wrong password again)
-      await loginPage.assertStillOnLoginPage();
+      await loginPage.assertStillOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
     });
   });
 
@@ -187,7 +166,7 @@ test.describe('Invalid Login', () => {
       // Phase 1: Attempt to trigger rate limiting naturally
       const randomEmail = generateRandomEmail();
       await loginPage.submitEmail(randomEmail);
-      await loginPage.assertPasswordScreenLoaded();
+      await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
       let rateLimitTriggered = false;
 

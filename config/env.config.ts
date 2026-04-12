@@ -15,6 +15,7 @@ export class EnvConfigReader {
   private static instance: EnvConfigReader;
 
   private readonly baseURL: string;
+  private readonly dashboardURL: string;
   private readonly email: string;
   private readonly password: string;
   private readonly environment: string;
@@ -22,6 +23,7 @@ export class EnvConfigReader {
   private constructor() {
     this.environment = process.env.env || 'prod';
     this.baseURL = this.getRequiredEnv('BASE_URL');
+    this.dashboardURL = this.getRequiredEnv('DASHBOARD_URL');
     this.email = this.getRequiredEnv('HUDL_EMAIL');
     this.password = this.getRequiredEnv('HUDL_PASSWORD');
   }
@@ -86,5 +88,9 @@ export class EnvConfigReader {
       email: this.email,
       password: this.password,
     };
+  }
+
+  public getDashboardURL(): string {
+    return this.dashboardURL;
   }
 }

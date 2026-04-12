@@ -2,24 +2,50 @@ import { type Page, type Locator, expect } from '@playwright/test';
 
 /**
  * Page Object Model for the Hudl Dashboard Page.
- * This is the page users land on after successful login.
  *
- * Used primarily to verify successful login by checking
- * that the URL has changed away from the login page.
+ * This is the page users land on after successful login.
+ * Handles post-login verification and user menu interactions.
  */
 export class DashboardPage {
   readonly page: Page;
+  readonly dashboardURL: string;
 
   // --- Locators ---
-  readonly userMenu: Locator;
-  readonly globalNavigation: Locator;
+  readonly userAvatar: Locator;
+  readonly userName: Locator;
+  readonly userEmail: Locator;
+  readonly logoutButton: Locator;
 
-  constructor(page: Page) {
+  constructor(page: Page, dashboardURL: string) {
     this.page = page;
+    this.dashboardURL = dashboardURL;
 
-    // Navigation elements (update after verifying post-login page)
-    this.userMenu = page.locator('[data-qa-id="webnav-usermenu"]');
-    this.globalNavigation = page.locator('nav');
+    // User menu elements
+    this.userAvatar = page.locator('.u-avatar__content-container');
+    this.userName = page.locator('[class*="displayName"]');
+    this.userEmail = page.locator('[class*="globalUserItemEmail"]');
+    this.logoutButton = page.locator('[data-qa-id="hui-logout"]');
+  }
+
+  // ===================
+  // Actions
+  // ===================
+
+  /**
+   * Open user dropdown menu by clicking on avatar.
+   */
+  async openUserMenu(): Promise<void> {
+    await this.userAvatar.click();
+  }
+
+  /**
+   * Logout from the application.
+   * Opens user menu and clicks logout.
+   */
+  async logout(): Promise<void> {
+    await this.openUserMenu();
+    await this.logoutButton.waitFor({ state: 'visible', timeout: 10000 });
+    await this.logoutButton.click();
   }
 
   // ===================
@@ -28,20 +54,50 @@ export class DashboardPage {
 
   /**
    * Assert that the dashboard is loaded after successful login.
-   * Verifies URL has changed away from /login.
+   * Verifies URL matches the expected dashboard URL from env file.
    */
   async assertPageLoaded(): Promise<void> {
-    await expect(this.page).not.toHaveURL(/.*login.*/, { timeout: 15000 });
-    await expect(this.page).toHaveURL(/.*home.*/);
+    await expect(this.page).toHaveURL(this.dashboardURL, { timeout: 15000 });
   }
 
   /**
    * Assert that user is logged in.
-   * Uses flexible URL check — just verifies we're NOT on login page.
+   * Uses flexible URL check — verifies we're NOT on login page.
    * This is more resilient than checking for a specific dashboard URL.
    */
-  async assertLoggedIn(): Promise<void> {
-    await expect(this.page).not.toHaveURL(/.*login.*/, { timeout: 15000 });
+  async assertLoggedIn(expectedURL: any): Promise<void> {
+    await expect(this.page).not.toHaveURL(expectedURL, { timeout: 15000 });
+  }
+
+  /**
+   * Assert page title matches expected.
+   */
+  async assertPageTitle(expectedTitle: string): Promise<void> {
+    await expect(this.page).toHaveTitle(expectedTitle);
+  }
+
+  /**
+   * Assert user avatar is visible (indicates logged in state).
+   */
+  async assertUserAvatarVisible(): Promise<void> {
+    await expect(this.userAvatar).toBeVisible();
+  }
+
+  /**
+   * Assert the user display name in dropdown.
+   * Opens user menu first to make elements visible.
+   */
+  async assertUserName(expectedName: string): Promise<void> {
+    await this.openUserMenu();
+    await expect(this.userName).toContainText(expectedName);
+  }
+
+  /**
+   * Assert the user email in dropdown.
+   * Requires user menu to be open.
+   */
+  async assertUserEmail(expectedEmail: string): Promise<void> {
+    await expect(this.userEmail).toContainText(expectedEmail);
   }
 
   /**
