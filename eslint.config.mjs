@@ -29,21 +29,12 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'off',
 
       // Enforce consistent type imports
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        { prefer: 'type-imports' },
-      ],
+      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
     },
   },
 
   // Ignore patterns
   {
-    ignores: [
-      'node_modules/',
-      'dist/',
-      'test-results/',
-      'playwright-report/',
-      'blob-report/',
-    ],
+    ignores: ['node_modules/', 'dist/', 'test-results/', 'playwright-report/', 'blob-report/'],
   },
 ];
