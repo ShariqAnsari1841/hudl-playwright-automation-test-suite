@@ -20,7 +20,7 @@ A production-ready test automation framework built with **Playwright** and **Typ
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Technology                                            | Purpose                         |
 | ----------------------------------------------------- | ------------------------------- |
@@ -33,7 +33,7 @@ A production-ready test automation framework built with **Playwright** and **Typ
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```markdown
 hudl-playwright-automation-test-suite/
@@ -85,7 +85,7 @@ hudl-playwright-automation-test-suite/
 
 ---
 
-## ✅ Prerequisites
+## Prerequisites
 
 Before setting up the project, ensure you have the following installed:
 
@@ -103,7 +103,7 @@ git --version     # Should be v2+
 
 ---
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repository
 
@@ -135,7 +135,7 @@ cp env_example/.env.staging.example env/.env.staging
 
 ---
 
-## 🔐 Environment Configuration
+## Environment Configuration
 
 The framework supports **multiple environments** via separate env files:
 
@@ -164,7 +164,7 @@ The framework supports **multiple environments** via separate env files:
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 ### Run All Tests (Default: Production)
 
@@ -234,7 +234,7 @@ npm run test:report       # Open last HTML report
 
 ---
 
-## 🔍 Code Quality
+## Code Quality
 
 The project uses **ESLint** for code quality and **Prettier** for consistent formatting.
 
@@ -276,7 +276,7 @@ This ensures:
 
 ---
 
-## 🚀 CI/CD Pipeline
+## CI/CD Pipeline
 
 The project includes a **GitHub Actions** pipeline that runs automatically on:
 
@@ -325,7 +325,7 @@ Set these in **Settings → Secrets and variables → Actions**:
 
 ---
 
-## 📊 Viewing Test Reports
+## Viewing Test Reports
 
 ### After Local Test Run
 
@@ -357,7 +357,7 @@ The report includes:
 
 ---
 
-## 🧪 Test Scenarios Covered
+## Test Scenarios Covered
 
 ### Valid Login Tests (3 tests)
 
@@ -424,7 +424,7 @@ The report includes:
 
 ---
 
-## 🏗️ Design Decisions
+## Design Decisions
 
 | Decision                      | Rationale                                                                                                                                        |
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -440,7 +440,7 @@ The report includes:
 
 ---
 
-## 📝 Notes
+## Notes
 
 - **Hudl Login Flow:** The login page uses a two-step authentication flow.
   - Step 1: Collects the email.
