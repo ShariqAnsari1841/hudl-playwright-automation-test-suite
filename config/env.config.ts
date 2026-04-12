@@ -56,9 +56,9 @@ export class EnvConfigReader {
     if (!value) {
       throw new Error(
         `\n❌ Missing required environment variable: ${key}\n` +
-        `   Current environment: ${this.environment}\n` +
-        `   Please check your env/.env.${this.environment} file\n` +
-        `   Refer to env/.env.example for required variables\n`
+          `   Current environment: ${this.environment}\n` +
+          `   Please check your env/.env.${this.environment} file\n` +
+          `   Refer to env/.env.example for required variables\n`,
       );
     }
 

@@ -15,13 +15,11 @@ import { generateRandomEmail } from '../../utils/helpers/email.helper';
  *   env=prod npx playwright test tests/login/login-ui.spec.ts
  */
 test.describe('Login Page UI', () => {
-
   // =========================================
   // Email Screen (Step 1) UI Validation
   // =========================================
 
   test.describe('Email Screen', () => {
-
     test('should display all email screen elements', async ({ loginPage }) => {
       // Verify: All expected elements are visible
       await expect(loginPage.emailInput).toBeVisible();
@@ -60,9 +58,7 @@ test.describe('Login Page UI', () => {
       expect(value).toBe(LoginTestData.SAMPLE_EMAIL);
     });
 
-    test('should transition from email screen to password screen', async ({
-      loginPage,
-    }) => {
+    test('should transition from email screen to password screen', async ({ loginPage }) => {
       // Verify: Email screen is the initial state
       await loginPage.assertEmailScreenLoaded(LoginTestData.EMAIL_SCREEN_URL);
       await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
@@ -103,9 +99,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.readOnlyEmailDisplay).toBeVisible();
     });
 
-    test('should display entered email as read-only on password screen', async ({
-      loginPage,
-    }) => {
+    test('should display entered email as read-only on password screen', async ({ loginPage }) => {
       // Verify: Email is displayed as read-only text
       const displayedEmail = await loginPage.getDisplayedEmail();
       expect(displayedEmail).toBe(randomEmail);
@@ -160,9 +154,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.page).toHaveURL(LoginTestData.FORGOT_PASSWORD_URL);
     });
 
-    test('should return to email screen when clicking edit email', async ({
-      loginPage,
-    }) => {
+    test('should return to email screen when clicking edit email', async ({ loginPage }) => {
       // Verify: Currently on password screen
       await expect(loginPage.page).toHaveURL(LoginTestData.PASSWORD_SCREEN_URL);
 
@@ -177,9 +169,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.emailInput).toBeEditable();
     });
 
-    test('should preserve email when returning to email screen via edit', async ({
-      loginPage,
-    }) => {
+    test('should preserve email when returning to email screen via edit', async ({ loginPage }) => {
       // Action: Click edit email
       await loginPage.clickEditEmail();
 

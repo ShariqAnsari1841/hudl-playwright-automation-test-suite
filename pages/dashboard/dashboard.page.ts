@@ -65,7 +65,7 @@ export class DashboardPage {
    * Uses flexible URL check — verifies we're NOT on login page.
    * This is more resilient than checking for a specific dashboard URL.
    */
-  async assertLoggedIn(expectedURL: any): Promise<void> {
+  async assertLoggedIn(expectedURL: string | RegExp): Promise<void> {
     await expect(this.page).not.toHaveURL(expectedURL, { timeout: 15000 });
   }
 

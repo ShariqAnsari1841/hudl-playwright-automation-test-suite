@@ -45,7 +45,7 @@ export class LoginPage {
     this.invalidEmailError = page.locator('#error-cs-email-invalid');
 
     // Step 2: Password Screen
-	  this.readOnlyEmailDisplay = page.locator('.ulp-authenticator-selector-text');
+    this.readOnlyEmailDisplay = page.locator('.ulp-authenticator-selector-text');
     this.passwordInput = page.locator('#password');
     this.passwordVisibilityToggle = page.locator('[aria-label="Show password"]');
     this.showPasswordTooltip = page.locator('.show-password-tooltip');
@@ -182,7 +182,7 @@ export class LoginPage {
    * Assert that the email screen (Step 1) is loaded and ready.
    * URL pattern: identity.hudl.com/u/login/identifier
    */
-  async assertEmailScreenLoaded(expectedUrl: any): Promise<void> {
+  async assertEmailScreenLoaded(expectedUrl: string | RegExp): Promise<void> {
     await expect(this.page).toHaveURL(expectedUrl);
     await expect(this.emailInput).toBeVisible();
     await expect(this.continueButton).toBeVisible();
@@ -235,7 +235,7 @@ export class LoginPage {
    * Assert that the password screen (Step 2) is loaded and ready.
    * URL pattern: identity.hudl.com/u/login/password
    */
-  async assertPasswordScreenLoaded(expectedUrl: any): Promise<void> {
+  async assertPasswordScreenLoaded(expectedUrl: string | RegExp): Promise<void> {
     await expect(this.page).toHaveURL(expectedUrl);
     await expect(this.passwordInput).toBeVisible();
     await expect(this.continueButton).toBeVisible();
@@ -265,14 +265,14 @@ export class LoginPage {
   /**
    * Assert that the login page is loaded (initial state — email screen).
    */
-  async assertPageLoaded(expectedUrl: any): Promise<void> {
+  async assertPageLoaded(expectedUrl: string | RegExp): Promise<void> {
     await this.assertEmailScreenLoaded(expectedUrl);
   }
 
   /**
    * Assert that the user is still on the login page (either step).
    */
-  async assertStillOnLoginPage(expectedUrl: any): Promise<void> {
+  async assertStillOnLoginPage(expectedUrl: string | RegExp): Promise<void> {
     await expect(this.page).toHaveURL(expectedUrl);
   }
 

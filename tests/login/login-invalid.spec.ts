@@ -15,13 +15,11 @@ import { generateRandomEmail } from '../../utils/helpers/email.helper';
  *   env=prod npx playwright test tests/login/login-invalid.spec.ts
  */
 test.describe('Invalid Login', () => {
-
   // =========================================
   // Step 1: Email Screen - Invalid Scenarios
   // =========================================
 
   test.describe('Email Screen Validations', () => {
-
     test('should show error when submitting empty email', async ({ loginPage }) => {
       // Action: Click continue without entering email
       await loginPage.submitEmailExpectingError(LoginTestData.EMPTY_STRING);
@@ -112,9 +110,7 @@ test.describe('Invalid Login', () => {
       await loginPage.assertPromptError(LoginTestData.GENERAL_ERROR);
     });
 
-    test('should remain on login page after failed password attempt', async ({
-      loginPage,
-    }) => {
+    test('should remain on login page after failed password attempt', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
@@ -129,9 +125,7 @@ test.describe('Invalid Login', () => {
       await expect(loginPage.continueButton).toBeVisible();
     });
 
-    test('should allow retry after failed password attempt', async ({
-      loginPage,
-    }) => {
+    test('should allow retry after failed password attempt', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
@@ -153,8 +147,7 @@ test.describe('Invalid Login', () => {
   // Rate Limiting
   // =========================================
 
-   test.describe('Rate Limiting', () => {
-
+  test.describe('Rate Limiting', () => {
     test('should show rate limit error after too many failed login attempts', async ({
       loginPage,
     }) => {
@@ -168,8 +161,6 @@ test.describe('Invalid Login', () => {
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
 
-      let rateLimitTriggered = false;
-
       for (let attempt = 1; attempt <= LoginTestData.MAX_LOGIN_ATTEMPTS; attempt++) {
         await loginPage.fillPassword(LoginTestData.INVALID_PASSWORD);
         await loginPage.clickContinue();
@@ -177,7 +168,6 @@ test.describe('Invalid Login', () => {
         if (await loginPage.isPromptErrorVisible()) {
           await loginPage.assertPromptError(LoginTestData.RATE_LIMIT_ERROR);
           console.log(`⚠️ Rate limited after ${attempt} failed attempts`);
-          rateLimitTriggered = true;
           break;
         }
       }

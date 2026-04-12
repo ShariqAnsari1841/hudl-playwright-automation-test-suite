@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/base.fixture';
+import { test } from '../../fixtures/base.fixture';
 import { LoginTestData } from '../../utils/test-data/login-test-data/login.test.data';
 
 /**
@@ -17,7 +17,6 @@ import { LoginTestData } from '../../utils/test-data/login-test-data/login.test.
  *   env=prod npx playwright test tests/login/login-valid.spec.ts
  */
 test.describe('Valid Login', () => {
-
   test('should login successfully with valid credentials', async ({
     loginPage,
     dashboardPage,
@@ -55,7 +54,7 @@ test.describe('Valid Login', () => {
   }) => {
     // Perform complete login using shorthand method
     await loginPage.login(credentials.email, credentials.password);
-    
+
     // Verify: User is redirected away from login page
     await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
     // Verify: User avatar is visible in the header

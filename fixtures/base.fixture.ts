@@ -43,7 +43,7 @@ type CustomFixtures = {
  */
 export const test = base.extend<CustomFixtures>({
   // Fixture: Provides validated credentials from env file
-  credentials: async ({}, use) => {
+  credentials: async (_options, use) => {
     const config = EnvConfigReader.getInstance();
     await use(config.getCredentials());
   },
