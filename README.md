@@ -4,7 +4,7 @@ A production-ready test automation framework built with **Playwright** and **Typ
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
@@ -38,41 +38,41 @@ A production-ready test automation framework built with **Playwright** and **Typ
 ```markdown
 hudl-playwright-automation-test-suite/
 ├── .github/
-│ └── workflows/
-│ └── playwright.yml # CI/CD pipeline configuration
+│   └── workflows/
+│       └── playwright.yml              # CI/CD pipeline configuration
 ├── config/
-│ └── env.config.ts # Singleton environment config reader
+│   └── env.config.ts                   # Singleton environment config reader
 ├── env/
-│ ├── .env.prod # Production credentials (git-ignored)
-│ ├── .env.staging # Staging credentials (git-ignored)
+│   ├── .env.prod                       # Production credentials (git-ignored)
+│   └── .env.staging                    # Staging credentials (git-ignored)
 ├── env_example/
-│ ├── .env.prod.example # Template for production environment variables
-│ └── .env.staging.example # Template for staging environment variables
+│   ├── .env.prod.example              # Template for production environment variables
+│   └── .env.staging.example           # Template for staging environment variables
 ├── fixtures/
-│ └── base.fixture.ts # Custom Playwright fixtures
+│   └── base.fixture.ts                # Custom Playwright fixtures
 ├── pages/
-│ ├── login/
-│ │ └── login.page.ts # Login page object model
-│ └── dashboard/
-│ └── dashboard.page.ts # Dashboard page object model
+│   ├── login/
+│   │   └── login.page.ts             # Login page object model
+│   └── dashboard/
+│       └── dashboard.page.ts          # Dashboard page object model
 ├── tests/
-│ └── login/
-│ ├── login-valid.spec.ts # Valid login test scenarios
-│ ├── login-invalid.spec.ts # Invalid login test scenarios
-│ └── login-ui.spec.ts # UI validation test scenarios
+│   └── login/
+│       ├── login-valid.spec.ts        # Valid login test scenarios
+│       ├── login-invalid.spec.ts      # Invalid login test scenarios
+│       └── login-ui.spec.ts           # UI validation test scenarios
 ├── utils/
-│ ├── helpers/
-│ │ └── email.helper.ts # Random email generator utility
-│ └── test-data/
-│ └── login-test-data
-│ └── login.data.ts # Test data constants
+│   ├── helpers/  
+│   │   └── email.helper.ts           # Random email generator utility
+│   └── test-data/
+│       └── login-test-data/
+│           └── login.data.ts          # Test data constants
 ├── .gitignore
-├── .prettierrc # Prettier configuration
-├── .prettierignore # Prettier ignore patterns
-├── eslint.config.mjs # ESLint configuration
+├── .prettierrc                        # Prettier configuration
+├── .prettierignore                    # Prettier ignore patterns
+├── eslint.config.mjs                  # ESLint configuration
 ├── package.json
-├── playwright.config.ts # Playwright configuration
-├── tsconfig.json # TypeScript configuration
+├── playwright.config.ts               # Playwright configuration
+├── tsconfig.json                      # TypeScript configuration
 └── README.md
 ```
 
@@ -270,9 +270,9 @@ npm run format:check
 
 This ensures:
 
-- ✅ No code quality issues (ESLint)
-- ✅ Consistent formatting (Prettier)
-- ✅ CI pipeline won't fail on code quality checks
+- No code quality issues (ESLint)
+- Consistent formatting (Prettier)
+- CI pipeline won't fail on code quality checks
 
 ---
 
@@ -286,19 +286,19 @@ The project includes a **GitHub Actions** pipeline that runs automatically on:
 
 ### Pipeline Steps
 
-1. ✅ Checkout code
-2. ✅ Setup Node.js
-3. ✅ Install dependencies
-4. ✅ Install Playwright browsers
-5. ✅ Create environment file from GitHub Secrets
-6. ✅ Run ESLint
-7. ✅ Check Prettier formatting
-8. ✅ Run Playwright tests
-9. ✅ Bundle screenshots and videos with report
-10. ✅ Upload HTML report as artifact
-11. ✅ Post Setup Node.js
-12. ✅ Post Checkout code
-13. ✅ Complete job
+1. Checkout code
+2. Setup Node.js
+3. Install dependencies
+4. Install Playwright browsers
+5. Create environment file from GitHub Secrets
+6. Run ESLint
+7. Check Prettier formatting
+8. Run Playwright tests
+9. Bundle screenshots and videos with report
+10. Upload HTML report as artifact
+11. Post Setup Node.js
+12. Post Checkout code
+13. Complete job
 
 ### Manual Trigger
 
@@ -350,10 +350,10 @@ npx playwright show-report path/to/unzipped/playwright-report
 
 The report includes:
 
-- ✅ Test results with pass/fail status
-- ✅ Screenshots on failure
-- ✅ Video recordings on failure
-- ✅ Trace viewer for debugging
+- Test results with pass/fail status
+- Screenshots on failure
+- Video recordings on failure
+- Trace viewer for debugging
 
 ---
 
