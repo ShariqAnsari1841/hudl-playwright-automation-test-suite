@@ -35,6 +35,7 @@ A production-ready test automation framework built with **Playwright** and **Typ
 
 ## Project Structure
 
+<!-- prettier-ignore-start -->
 ```markdown
 hudl-playwright-automation-test-suite/
 ├── .github/
@@ -75,6 +76,7 @@ hudl-playwright-automation-test-suite/
 ├── tsconfig.json                      # TypeScript configuration
 └── README.md
 ```
+<!-- prettier-ignore-end -->
 
 ### Key Design Patterns
 
@@ -127,6 +129,7 @@ npx playwright install
 ### 4. Setup Environment Variables
 
 The `env/` folder containing actual credentials is **git-ignored** and won't exist after cloning. Create it using the example templates:
+
 ```bash
 mkdir -p env
 cp env_example/.env.prod.example env/.env.prod
