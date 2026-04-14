@@ -1,15 +1,8 @@
 /**
- * Singleton configuration reader that validates and provides
- * access to environment variables loaded by playwright.config.ts.
+ * Singleton config reader that validates environment variables
+ * loaded by playwright.config.ts via dotenv.
  *
- * The .env file is loaded in playwright.config.ts based on env.
- * This class only validates and exposes the loaded values.
- *
- * Usage:
- *   import { EnvConfigReader } from '../config/env.config';
- *   const config = EnvConfigReader.getInstance();
- *   config.getBaseURL();
- *   config.getCredentials();
+ * Fails fast with descriptive errors if any required variable is missing.
  */
 export class EnvConfigReader {
   private static instance: EnvConfigReader | undefined;
@@ -28,9 +21,6 @@ export class EnvConfigReader {
     this.password = this.getRequiredEnv('HUDL_PASSWORD');
   }
 
-  /**
-   * Returns the singleton instance of EnvConfigReader.
-   */
   public static getInstance(): EnvConfigReader {
     if (!EnvConfigReader.instance) {
       EnvConfigReader.instance = new EnvConfigReader();
@@ -38,27 +28,19 @@ export class EnvConfigReader {
     return EnvConfigReader.instance;
   }
 
-  /**
-   * Resets the singleton instance.
-   * Useful for testing the config reader itself.
-   */
+  // Useful for testing the config reader itself
   public static resetInstance(): void {
     EnvConfigReader.instance = undefined;
   }
 
-  /**
-   * Retrieves a required environment variable.
-   * Throws descriptive error if the variable is missing.
-   */
   private getRequiredEnv(key: string): string {
     const value = process.env[key]?.trim();
 
     if (!value) {
       throw new Error(
-        `\n❌ Missing required environment variable: ${key}\n` +
-          `   Current environment: ${this.environment}\n` +
-          `   Please check your env/.env.${this.environment} file\n` +
-          `   Refer to env/.env.example for required variables\n`,
+        `Missing required environment variable: ${key}\n` +
+          `  Environment: ${this.environment}\n` +
+          `  Check your env/.env.${this.environment} file`,
       );
     }
 

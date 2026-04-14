@@ -2,20 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 
-/**
- * Load environment variables from the appropriate .env file.
- *
- * Usage from terminal:
- *   env=prod npx playwright test              (uses env/.env.prod)
- *   env=staging npx playwright test           (uses env/.env.staging)
- *   npx playwright test                            (defaults to env/.env.prod)
- *
- * Combined with other Playwright options:
- *   env=prod npx playwright test --headed
- *   env=prod npx playwright test --project=chromium
- *   env=staging npx playwright test --ui
- *   env=prod npx playwright test tests/login/
- */
+// Load env file based on `env` variable: env=prod|staging (defaults to prod)
 process.env.env = process.env.env || 'prod';
 
 dotenv.config({
@@ -24,16 +11,25 @@ dotenv.config({
 
 export default defineConfig({
   // Directory where tests are located
+  // Directory where tests are located
   testDir: './tests',
+
+  // Run tests in parallel for faster execution
 
   // Run tests in parallel for faster execution
   fullyParallel: true,
 
   // Fail the build on CI if you accidentally left test.only in the source code
+
+  // Fail the build on CI if you accidentally left test.only in the source code
   forbidOnly: !!process.env.CI,
 
   // Retry failed tests (0 locally, 1 on CI)
+
+  // Retry failed tests (0 locally, 1 on CI)
   retries: process.env.CI ? 1 : 0,
+
+  // Number of parallel workers
 
   // Number of parallel workers
   workers: process.env.CI ? 1 : undefined,
@@ -51,22 +47,11 @@ export default defineConfig({
 
   // Shared settings for all tests
   use: {
-    // Base URL loaded from environment file
     baseURL: process.env.BASE_URL,
-
-    // Capture screenshot on failure
     screenshot: 'only-on-failure',
-
-    // Record video on failure
     video: 'retain-on-failure',
-
-    // Capture trace on first retry
     trace: 'on-first-retry',
-
-    // Action timeout
     actionTimeout: 10_000,
-
-    // Navigation timeout
     navigationTimeout: 30_000,
   },
 
