@@ -25,7 +25,7 @@ export const LoginTestData = {
   // Common error messages (prompt-alert)
   GENERAL_ERROR: 'Something went wrong. Try again',
   RATE_LIMIT_ERROR:
-    "You’ve tried to log in too many times, so we’ve temporarily blocked your account. To get help, contact support",
+    'You’ve tried to log in too many times, so we’ve temporarily blocked your account. To get help, contact support',
 
   // Rate limiting config
   MAX_LOGIN_ATTEMPTS: 10,

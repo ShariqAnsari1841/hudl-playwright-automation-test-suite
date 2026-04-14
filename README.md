@@ -364,21 +364,21 @@ The report includes:
 
 ### Valid Login Tests (4 tests)
 
-| #   | Scenario                                                     |
-| --- | ------------------------------------------------------------ |
-| 1   | Verify user can login successfully with valid credentials    |
+| #   | Scenario                                                      |
+| --- | ------------------------------------------------------------- |
+| 1   | Verify user can login successfully with valid credentials     |
 | 2   | Verify user is redirected to dashboard after successful login |
-| 3   | Verify user avatar is displayed after successful login       |
-| 4   | Verify session is maintained after page reload post-login    |
+| 3   | Verify user avatar is displayed after successful login        |
+| 4   | Verify session is maintained after page reload post-login     |
 
 ### Invalid Login Tests (9 tests)
 
 #### Email Validation
 
-| #   | Scenario                                                 |
-| --- | -------------------------------------------------------- |
-| 1   | Verify error is shown when submitting empty email        |
-| 2   | Verify error is shown when submitting malformed email    |
+| #   | Scenario                                                   |
+| --- | ---------------------------------------------------------- |
+| 1   | Verify error is shown when submitting empty email          |
+| 2   | Verify error is shown when submitting malformed email      |
 | 3   | Verify error is shown when submitting spaces only as email |
 
 #### Password Validation
@@ -401,15 +401,15 @@ The report includes:
 
 #### Email Screen
 
-| #   | Scenario                                                 |
-| --- | -------------------------------------------------------- |
-| 1   | Verify all email screen elements are displayed           |
-| 2   | Verify correct page heading is displayed                 |
-| 3   | Verify correct page title is displayed                   |
-| 4   | Verify Hudl logo is displayed on email screen            |
-| 5   | Verify page redirects to identity provider URL           |
-| 6   | Verify email input field is editable                     |
-| 7   | Verify transition from email screen to password screen   |
+| #   | Scenario                                               |
+| --- | ------------------------------------------------------ |
+| 1   | Verify all email screen elements are displayed         |
+| 2   | Verify correct page heading is displayed               |
+| 3   | Verify correct page title is displayed                 |
+| 4   | Verify Hudl logo is displayed on email screen          |
+| 5   | Verify page redirects to identity provider URL         |
+| 6   | Verify email input field is editable                   |
+| 7   | Verify transition from email screen to password screen |
 
 #### Password Screen
 
