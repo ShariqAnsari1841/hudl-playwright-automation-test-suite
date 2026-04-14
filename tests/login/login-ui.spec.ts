@@ -20,7 +20,7 @@ test.describe('Login Page UI', () => {
   // =========================================
 
   test.describe('Email Screen', () => {
-    test('should display all email screen elements', async ({ loginPage }) => {
+    test('Verify all email screen elements are displayed', async ({ loginPage }) => {
       // Verify: All expected elements are visible
       await expect(loginPage.emailInput).toBeVisible();
       await expect(loginPage.continueButton).toBeVisible();
@@ -28,27 +28,27 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.pageHeading).toBeVisible();
     });
 
-    test('should display correct page heading', async ({ loginPage }) => {
+    test('Verify correct page heading is displayed', async ({ loginPage }) => {
       // Verify: Heading text matches expected
       await expect(loginPage.pageHeading).toHaveText(LoginTestData.PAGE_HEADING);
     });
 
-    test('should display correct page title', async ({ loginPage }) => {
+    test('Verify correct page title is displayed', async ({ loginPage }) => {
       // Verify: Browser tab title matches expected
       await expect(loginPage.page).toHaveTitle(LoginTestData.LOGIN_PAGE_TITLE);
     });
 
-    test('should display Hudl logo on email screen', async ({ loginPage }) => {
+    test('Verify Hudl logo is displayed on email screen', async ({ loginPage }) => {
       // Verify: Logo is visible and rendered
       await expect(loginPage.hudlLogo).toBeVisible();
     });
 
-    test('should redirect to identity provider URL', async ({ loginPage }) => {
+    test('Verify page redirects to identity provider URL', async ({ loginPage }) => {
       // Verify: URL redirected from hudl.com/login to identity.hudl.com
       await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
     });
 
-    test('should have email input field editable', async ({ loginPage }) => {
+    test('Verify email input field is editable', async ({ loginPage }) => {
       // Verify: Email input is interactive
       await expect(loginPage.emailInput).toBeEditable();
 
@@ -58,7 +58,7 @@ test.describe('Login Page UI', () => {
       expect(value).toBe(LoginTestData.SAMPLE_EMAIL);
     });
 
-    test('should transition from email screen to password screen', async ({ loginPage }) => {
+    test('Verify transition from email screen to password screen', async ({ loginPage }) => {
       // Verify: Email screen is the initial state
       await loginPage.assertEmailScreenLoaded(LoginTestData.EMAIL_SCREEN_URL);
       await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
@@ -87,7 +87,7 @@ test.describe('Login Page UI', () => {
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
     });
 
-    test('should display all password screen elements', async ({ loginPage }) => {
+    test('Verify all password screen elements are displayed', async ({ loginPage }) => {
       // Verify: All expected elements are visible
       await expect(loginPage.passwordInput).toBeVisible();
       await expect(loginPage.continueButton).toBeVisible();
@@ -99,7 +99,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.readOnlyEmailDisplay).toBeVisible();
     });
 
-    test('should display entered email as read-only on password screen', async ({ loginPage }) => {
+    test('Verify entered email is displayed as read-only on password screen', async ({ loginPage }) => {
       // Verify: Email is displayed as read-only text
       const displayedEmail = await loginPage.getDisplayedEmail();
       expect(displayedEmail).toBe(randomEmail);
@@ -108,7 +108,7 @@ test.describe('Login Page UI', () => {
       await loginPage.assertEmailNotEditable();
     });
 
-    test('should mask password by default', async ({ loginPage }) => {
+    test('Verify password is masked by default', async ({ loginPage }) => {
       // Enter a password
       await loginPage.fillPassword(LoginTestData.SAMPLE_PASSWORD);
 
@@ -117,7 +117,7 @@ test.describe('Login Page UI', () => {
       expect(inputType).toBe(LoginTestData.PASSWORD_TYPE_MASKED);
     });
 
-    test('should toggle password visibility', async ({ loginPage }) => {
+    test('Verify password visibility can be toggled', async ({ loginPage }) => {
       // Enter a password
       await loginPage.fillPassword(LoginTestData.SAMPLE_PASSWORD);
 
@@ -146,7 +146,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.showPasswordTooltip).toContainText(LoginTestData.SHOW_PASSWORD_LABEL);
     });
 
-    test('should navigate to forgot password page', async ({ loginPage }) => {
+    test('Verify navigation to forgot password page', async ({ loginPage }) => {
       // Action: Click forgot password link
       await loginPage.clickForgotPassword();
 
@@ -154,7 +154,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.page).toHaveURL(LoginTestData.FORGOT_PASSWORD_URL);
     });
 
-    test('should return to email screen when clicking edit email', async ({ loginPage }) => {
+    test('Verify user returns to email screen when clicking edit email', async ({ loginPage }) => {
       // Verify: Currently on password screen
       await expect(loginPage.page).toHaveURL(LoginTestData.PASSWORD_SCREEN_URL);
 
@@ -169,7 +169,7 @@ test.describe('Login Page UI', () => {
       await expect(loginPage.emailInput).toBeEditable();
     });
 
-    test('should preserve email when returning to email screen via edit', async ({ loginPage }) => {
+    test('Verify email is preserved when returning to email screen via edit', async ({ loginPage }) => {
       // Action: Click edit email
       await loginPage.clickEditEmail();
 

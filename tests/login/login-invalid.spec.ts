@@ -20,7 +20,7 @@ test.describe('Invalid Login', () => {
   // =========================================
 
   test.describe('Email Screen Validations', () => {
-    test('should show error when submitting empty email', async ({ loginPage }) => {
+    test('Verify error is shown when submitting empty email', async ({ loginPage }) => {
       // Action: Click continue without entering email
       await loginPage.submitEmailExpectingError(LoginTestData.EMPTY_STRING);
 
@@ -31,7 +31,7 @@ test.describe('Invalid Login', () => {
       await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
     });
 
-    test('should show error when submitting malformed email', async ({ loginPage }) => {
+    test('Verify error is shown when submitting malformed email', async ({ loginPage }) => {
       // Action: Enter malformed email and click continue
       await loginPage.submitEmailExpectingError(LoginTestData.MALFORMED_EMAIL);
 
@@ -42,7 +42,7 @@ test.describe('Invalid Login', () => {
       await expect(loginPage.page).toHaveURL(LoginTestData.EMAIL_SCREEN_URL);
     });
 
-    test('should show error when submitting spaces only as email', async ({ loginPage }) => {
+    test('Verify error is shown when submitting spaces only as email', async ({ loginPage }) => {
       // Action: Enter only spaces and click continue
       await loginPage.submitEmailExpectingError(LoginTestData.SPACES_ONLY);
 
@@ -66,7 +66,7 @@ test.describe('Invalid Login', () => {
       randomEmail = generateRandomEmail();
     });
 
-    test('should show error when submitting empty password', async ({ loginPage }) => {
+    test('Verify error is shown when submitting empty password', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
@@ -81,7 +81,7 @@ test.describe('Invalid Login', () => {
       await expect(loginPage.page).toHaveURL(LoginTestData.PASSWORD_SCREEN_URL);
     });
 
-    test('should show error when submitting wrong password', async ({ loginPage }) => {
+    test('Verify error is shown when submitting wrong password', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
@@ -96,7 +96,7 @@ test.describe('Invalid Login', () => {
       await loginPage.assertStillOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
     });
 
-    test('should show general error when submitting spaces only as password', async ({
+    test('Verify general error is shown when submitting spaces only as password', async ({
       loginPage,
     }) => {
       // Navigate to password screen with random email
@@ -110,7 +110,7 @@ test.describe('Invalid Login', () => {
       await loginPage.assertPromptError(LoginTestData.GENERAL_ERROR);
     });
 
-    test('should remain on login page after failed password attempt', async ({ loginPage }) => {
+    test('Verify user remains on login page after failed password attempt', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
@@ -125,7 +125,7 @@ test.describe('Invalid Login', () => {
       await expect(loginPage.continueButton).toBeVisible();
     });
 
-    test('should allow retry after failed password attempt', async ({ loginPage }) => {
+    test('Verify user can retry after failed password attempt', async ({ loginPage }) => {
       // Navigate to password screen with random email
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
@@ -148,7 +148,7 @@ test.describe('Invalid Login', () => {
   // =========================================
 
   test.describe('Rate Limiting', () => {
-    test('should show rate limit error after too many failed login attempts', async ({
+    test('Verify rate limit error is shown after too many failed login attempts', async ({
       loginPage,
     }) => {
       /**
@@ -156,10 +156,11 @@ test.describe('Invalid Login', () => {
        * First, try to trigger rate limiting naturally with a random email
        */
 
-      // Phase 1: Attempt to trigger rate limiting naturally
       const randomEmail = generateRandomEmail();
       await loginPage.submitEmail(randomEmail);
       await loginPage.assertPasswordScreenLoaded(LoginTestData.PASSWORD_SCREEN_URL);
+
+      let wasRateLimited = false;
 
       for (let attempt = 1; attempt <= LoginTestData.MAX_LOGIN_ATTEMPTS; attempt++) {
         await loginPage.fillPassword(LoginTestData.INVALID_PASSWORD);
@@ -167,10 +168,11 @@ test.describe('Invalid Login', () => {
 
         if (await loginPage.isPromptErrorVisible()) {
           await loginPage.assertPromptError(LoginTestData.RATE_LIMIT_ERROR);
-          console.log(`⚠️ Rate limited after ${attempt} failed attempts`);
+          wasRateLimited = true;
           break;
         }
       }
+      expect(wasRateLimited).toBe(true);
     });
   });
 });

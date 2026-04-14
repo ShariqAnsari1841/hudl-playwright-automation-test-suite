@@ -47,7 +47,7 @@ export class LoginPage {
     // Step 2: Password Screen
     this.readOnlyEmailDisplay = page.locator('.ulp-authenticator-selector-text');
     this.passwordInput = page.locator('#password');
-    this.passwordVisibilityToggle = page.locator('[aria-label="Show password"]');
+    this.passwordVisibilityToggle = page.getByRole('switch');
     this.showPasswordTooltip = page.locator('.show-password-tooltip');
     this.hidePasswordTooltip = page.locator('.hide-password-tooltip');
     this.editEmailLink = page.locator('[data-link-name="edit-username"]');

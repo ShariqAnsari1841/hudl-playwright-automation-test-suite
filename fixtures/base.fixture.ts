@@ -73,7 +73,7 @@ export const test = base.extend<CustomFixtures>({
 
     await loginPage.navigate();
     await loginPage.login(config.getEmail(), config.getPassword());
-    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    await dashboardPage.assertNotOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
 
     await use(page);
   },

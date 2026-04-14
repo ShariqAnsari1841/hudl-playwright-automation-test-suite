@@ -61,12 +61,11 @@ export class DashboardPage {
   }
 
   /**
-   * Assert that user is logged in.
-   * Uses flexible URL check — verifies we're NOT on login page.
-   * This is more resilient than checking for a specific dashboard URL.
+   * Assert that the user has navigated away from the login page.
+   * Verifies the current URL does NOT match the given login URL pattern.
    */
-  async assertLoggedIn(expectedURL: string | RegExp): Promise<void> {
-    await expect(this.page).not.toHaveURL(expectedURL, { timeout: 15000 });
+  async assertNotOnLoginPage(loginURL: string | RegExp): Promise<void> {
+    await expect(this.page).not.toHaveURL(loginURL, { timeout: 15000 });
   }
 
   /**

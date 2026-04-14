@@ -12,7 +12,7 @@
  *   config.getCredentials();
  */
 export class EnvConfigReader {
-  private static instance: EnvConfigReader;
+  private static instance: EnvConfigReader | undefined;
 
   private readonly baseURL: string;
   private readonly dashboardURL: string;
@@ -43,7 +43,7 @@ export class EnvConfigReader {
    * Useful for testing the config reader itself.
    */
   public static resetInstance(): void {
-    EnvConfigReader.instance = undefined as unknown as EnvConfigReader;
+    EnvConfigReader.instance = undefined;
   }
 
   /**

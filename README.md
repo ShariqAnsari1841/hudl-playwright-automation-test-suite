@@ -66,7 +66,7 @@ hudl-playwright-automation-test-suite/
 │   │   └── email.helper.ts           # Random email generator utility
 │   └── test-data/
 │       └── login-test-data/
-│           └── login.data.ts          # Test data constants
+│           └── login.test.data.ts      # Test data constants
 ├── .gitignore
 ├── .prettierrc                        # Prettier configuration
 ├── .prettierignore                    # Prettier ignore patterns
@@ -144,8 +144,8 @@ The framework supports **multiple environments** via separate env files:
 
 | File                               | Environment | Usage                                       |
 | ---------------------------------- | ----------- | ------------------------------------------- |
-| `env/.env.prod`                    | Production  | `ENV=prod npx playwright test`              |
-| `env/.env.staging`                 | Staging     | `ENV=staging npx playwright test`           |
+| `env/.env.prod`                    | Production  | `env=prod npx playwright test`              |
+| `env/.env.staging`                 | Staging     | `env=staging npx playwright test`           |
 | `env_example/.env.prod.example`    | Template    | Reference for required production variables |
 | `env_example/.env.staging.example` | Template    | Reference for required staging variables    |
 
@@ -160,8 +160,8 @@ The framework supports **multiple environments** via separate env files:
 
 ### How Environment Loading Works
 
-1.  `playwright.config.ts` reads the `ENV` variable (defaults to `prod`)
-2.  Loads the corresponding `env/.env.{ENV}` file using dotenv
+1.  `playwright.config.ts` reads the `env` variable (defaults to `prod`)
+2.  Loads the corresponding `env/.env.{env}` file using dotenv
 3.  `config/env.config.ts` validates all required variables exist
 4.  Fixtures and tests access values through the config reader
 
@@ -179,48 +179,48 @@ npx playwright test
 
 ```bash
 # Production
-ENV=prod npx playwright test
+env=prod npx playwright test
 
 # Staging
-ENV=staging npx playwright test
+env=staging npx playwright test
 ```
 
 ### Run Specific Test Files
 
 ```bash
 # Only valid login tests
-ENV=prod npx playwright test tests/login/login-valid.spec.ts
+env=prod npx playwright test tests/login/login-valid.spec.ts
 
 # Only invalid login tests
-ENV=prod npx playwright test tests/login/login-invalid.spec.ts
+env=prod npx playwright test tests/login/login-invalid.spec.ts
 
 # Only UI validation tests
-ENV=prod npx playwright test tests/login/login-ui.spec.ts
+env=prod npx playwright test tests/login/login-ui.spec.ts
 ```
 
 ### Run in Specific Browser
 
 ```bash
 # Chromium only
-ENV=prod npx playwright test --project=chromium
+env=prod npx playwright test --project=chromium
 
 # Firefox only
-ENV=prod npx playwright test --project=firefox
+env=prod npx playwright test --project=firefox
 
 # WebKit only
-ENV=prod npx playwright test --project=webkit
+env=prod npx playwright test --project=webkit
 ```
 
 ### Run in Headed Mode (Watch the Browser)
 
 ```bash
-ENV=prod npx playwright test --headed
+env=prod npx playwright test --headed
 ```
 
 ### Run in Playwright UI Mode
 
 ```bash
-ENV=prod npx playwright test --ui
+env=prod npx playwright test --ui
 ```
 
 ### Using npm Scripts
@@ -362,66 +362,66 @@ The report includes:
 
 ## Test Scenarios Covered
 
-### Valid Login Tests (3 tests)
+### Valid Login Tests (4 tests)
 
-| #   | Scenario                                             |
-| --- | ---------------------------------------------------- |
-| 1   | Should login successfully with valid credentials     |
-| 2   | Should redirect to dashboard after successful login  |
-| 3   | Should maintain session after page reload post-login |
+| #   | Scenario                                                     |
+| --- | ------------------------------------------------------------ |
+| 1   | Verify user can login successfully with valid credentials    |
+| 2   | Verify user is redirected to dashboard after successful login |
+| 3   | Verify user avatar is displayed after successful login       |
+| 4   | Verify session is maintained after page reload post-login    |
 
 ### Invalid Login Tests (9 tests)
 
 #### Email Validation
 
-| #   | Scenario                                               |
-| --- | ------------------------------------------------------ |
-| 1   | Should show error when submitting empty email          |
-| 2   | Should show error when submitting malformed email      |
-| 3   | Should show error when submitting spaces only as email |
+| #   | Scenario                                                 |
+| --- | -------------------------------------------------------- |
+| 1   | Verify error is shown when submitting empty email        |
+| 2   | Verify error is shown when submitting malformed email    |
+| 3   | Verify error is shown when submitting spaces only as email |
 
 #### Password Validation
 
-| #   | Scenario                                                          |
-| --- | ----------------------------------------------------------------- |
-| 4   | Should show error when submitting empty password                  |
-| 5   | Should show error when submitting wrong password                  |
-| 6   | Should show general error when submitting spaces only as password |
-| 7   | Should remain on login page after failed password attempt         |
-| 8   | Should allow retry after failed password attempt                  |
+| #   | Scenario                                                              |
+| --- | --------------------------------------------------------------------- |
+| 4   | Verify error is shown when submitting empty password                  |
+| 5   | Verify error is shown when submitting wrong password                  |
+| 6   | Verify general error is shown when submitting spaces only as password |
+| 7   | Verify user remains on login page after failed password attempt       |
+| 8   | Verify user can retry after failed password attempt                   |
 
 #### Rate Limiting
 
-| #   | Scenario                                                          |
-| --- | ----------------------------------------------------------------- |
-| 9   | Should show rate limit error after too many failed login attempts |
+| #   | Scenario                                                              |
+| --- | --------------------------------------------------------------------- |
+| 9   | Verify rate limit error is shown after too many failed login attempts |
 
-### UI Validation Tests (15 tests)
+### UI Validation Tests (14 tests)
 
 #### Email Screen
 
-| #   | Scenario                                               |
-| --- | ------------------------------------------------------ |
-| 1   | Should display all email screen elements               |
-| 2   | Should display correct page heading                    |
-| 3   | Should display correct page title                      |
-| 4   | Should display Hudl logo on email screen               |
-| 5   | Should redirect to identity provider URL               |
-| 6   | Should have email input field editable                 |
-| 7   | Should transition from email screen to password screen |
+| #   | Scenario                                                 |
+| --- | -------------------------------------------------------- |
+| 1   | Verify all email screen elements are displayed           |
+| 2   | Verify correct page heading is displayed                 |
+| 3   | Verify correct page title is displayed                   |
+| 4   | Verify Hudl logo is displayed on email screen            |
+| 5   | Verify page redirects to identity provider URL           |
+| 6   | Verify email input field is editable                     |
+| 7   | Verify transition from email screen to password screen   |
 
 #### Password Screen
 
-| #   | Scenario                                                      |
-| --- | ------------------------------------------------------------- |
-| 8   | Should display all password screen elements                   |
-| 9   | Should display Hudl logo on password screen                   |
-| 10  | Should display entered email as read-only on password screen  |
-| 11  | Should mask password by default                               |
-| 12  | Should toggle password visibility                             |
-| 13  | Should navigate to forgot password page                       |
-| 14  | Should return to email screen when clicking edit email        |
-| 15  | Should preserve email when returning to email screen via edit |
+| #   | Scenario                                                          |
+| --- | ----------------------------------------------------------------- |
+| 8   | Verify all password screen elements are displayed                 |
+| 9   | Verify entered email is displayed as read-only on password screen |
+| 10  | Verify password is masked by default                              |
+| 11  | Verify password visibility can be toggled                         |
+| 12  | Verify navigation to forgot password page                         |
+| 13  | Verify user returns to email screen when clicking edit email      |
+| 14  | Verify email is preserved when returning to email screen via edit |
 
 **Total: 27 test scenarios**
 
@@ -433,7 +433,7 @@ The report includes:
 | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Page Object Model**         | Separates page interactions from test logic. UI changes only require updating one file                                                           |
 | **Custom Fixtures**           | Provides reusable test setup. `loginPage` fixture automatically navigates to login page. `authenticatedPage` fixture handles complete login flow |
-| **Multi-environment support** | Separate env files for prod/staging. Switch with single command: `ENV=staging npx playwright test`                                               |
+| **Multi-environment support** | Separate env files for prod/staging. Switch with single command: `env=staging npx playwright test`                                               |
 | **Singleton Config Reader**   | Loads and validates env variables once. Provides type-safe getters. Fails fast with descriptive errors if variables are missing                  |
 | **Random Email Generator**    | Prevents rate limiting during negative tests. Each test run uses unique emails                                                                   |
 | **Feature-based folders**     | Tests, pages, and data organized by feature (`login/`, `dashboard/`). Easy to scale when new features are added                                  |

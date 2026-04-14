@@ -17,7 +17,7 @@ import { LoginTestData } from '../../utils/test-data/login-test-data/login.test.
  *   env=prod npx playwright test tests/login/login-valid.spec.ts
  */
 test.describe('Valid Login', () => {
-  test('should login successfully with valid credentials', async ({
+  test('Verify user can login successfully with valid credentials', async ({
     loginPage,
     dashboardPage,
     credentials,
@@ -30,10 +30,10 @@ test.describe('Valid Login', () => {
     await loginPage.submitPassword(credentials.password);
 
     // Verify: User is redirected away from login page
-    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    await dashboardPage.assertNotOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
   });
 
-  test('should redirect to dashboard after successful login', async ({
+  test('Verify user is redirected to dashboard after successful login', async ({
     loginPage,
     dashboardPage,
     credentials,
@@ -47,7 +47,7 @@ test.describe('Valid Login', () => {
     await dashboardPage.assertPageTitle(LoginTestData.DASHBOARD_PAGE_TITLE);
   });
 
-  test('should display user avatar after successful login', async ({
+  test('Verify user avatar is displayed after successful login', async ({
     loginPage,
     dashboardPage,
     credentials,
@@ -56,25 +56,25 @@ test.describe('Valid Login', () => {
     await loginPage.login(credentials.email, credentials.password);
 
     // Verify: User is redirected away from login page
-    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    await dashboardPage.assertNotOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
     // Verify: User avatar is visible in the header
     await dashboardPage.assertUserAvatarVisible();
   });
 
-  test('should maintain session after page reload post-login', async ({
+  test('Verify session is maintained after page reload post-login', async ({
     loginPage,
     dashboardPage,
     credentials,
   }) => {
     // Login successfully
     await loginPage.login(credentials.email, credentials.password);
-    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    await dashboardPage.assertNotOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
 
     // Reload the page
     await loginPage.page.reload();
 
     // Verify: User is still logged in after reload
-    await dashboardPage.assertLoggedIn(LoginTestData.PASSWORD_SCREEN_URL);
+    await dashboardPage.assertNotOnLoginPage(LoginTestData.PASSWORD_SCREEN_URL);
     // Verify: User avatar is still visible after reload
     await dashboardPage.assertUserAvatarVisible();
   });
