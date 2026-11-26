@@ -80,7 +80,6 @@ jobs:
       # Step 9: Run Playwright tests
       - name: Run Playwright tests
         run: env=${{ env.TEST_ENVIRONMENT }} npx playwright test --project=chromium
-        continue-on-error: true
 
       # Step 10: Copy test results into report folder for screenshots/videos
       - name: Bundle screenshots and videos with report
